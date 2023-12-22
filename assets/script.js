@@ -1,5 +1,33 @@
 //Make a timed quiz on JavaScript fundamentals that stores high scores
 
+// 1. Configure start button
+const startButton = document.getElementById(`start`); //Selects the existing 'start quiz' button
+const time = document.getElementById(`time`); //Selects the existing timer
+  // when clicked:
+startButton.addEventListener(`click`, function(event) {
+  event.preventDefault();
+  console.log(`timer started`);
+  countdown();
+    // a. timer starts (60seconds would be reasonable)
+  function countdown() {
+    let timeLeft = 60;
+    const timeInterval = setInterval(function () {
+      if (timeLeft > 0) {
+        time.textContent = timeLeft + 's';
+        timeLeft--;
+      } else {
+        time.textContent = '';
+        clearInterval(timeInterval); // to stop the timer
+      }
+    }, 1000);
+  }
+})
+
+    // b. landing page disappears - can hide/show using CSS?
+    // c. first question appears - make question ID state change from hide to show?
+    // d. answers appear as buttons 
+    
+    
 // Quiz question objects: (at least 5)
 const question1 = {
   question: `Who plays Mel?`,

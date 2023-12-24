@@ -5,9 +5,6 @@
 body {
   font-family: Arial;
   font-size: 120%;
-  background-image: url(../images/flight_of_the_conchords.png);
-  background-position: right;
-  background-repeat: no-repeat;
 }
 a {
   color: #563d7c;

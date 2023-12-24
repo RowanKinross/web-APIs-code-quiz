@@ -5,15 +5,15 @@ const startButton = document.getElementById(`start`); //Selects the existing 'st
 const time = document.getElementById(`time`); //Selects the existing timer
 const startScreen = document.getElementById(`start-screen`);
 const questionScreen = document.getElementById(`questions`);
-
+const questionTitle = document.getElementById('question-title');
+const questionChoices = document.getElementById('choices');
 
 
 // Quiz question objects: (at least 5)
 const question1 = {
 question: `Who plays Mel?`,
-trueAnswer: `Kristen Schaal`,
-falseAnswer1: `Kristen Stewart`,
-falseAnswer2: `Kristen Wiig`
+answers: [`Kristen Schaal`,`Kristen Stewart`,`Kristen Wiig`],
+correctAnswer: `Kristen Schaal`,
 }
 const question2 = {
 question: `What kind of pie does Albi the racist dragon eat at the end of the episode?`,
@@ -61,20 +61,40 @@ startButton.addEventListener(`click`, function(event) {
   }
     // b. landing page disappears - can hide/show using CSS?
   startScreen.classList.add(`hide`);
-    // c. first question appears - make question ID state change from hide to show?
+    // c. first question appears - change/remove `hide` question ID state
+  questionScreen.classList.remove('hide');
+  questionTitle.textContent = question1.question;
+
+  // d. answers appear as buttons 
+renderAnswers()
+  function renderAnswers() {
+  const ul = document.createElement(`ul`)
+  questionChoices.appendChild(ul);
   
-    // d. answers appear as buttons 
-})
+    for (let i = 0; i < question1.answers.length; i++) {
+      answer = question1.answers[i];
+      var button = document.createElement("button");
+      button.textContent = answer;
+      ul.appendChild(button);
+  }
+
+
+    }
+}); // <-- end of start button when clicked event
+
+ 
+  
+
 
     
 
-// 1. Configure start button
-    //queryselector the 'start quiz' button
-  // when clicked:
-    // a. timer starts (60seconds would be reasonable)
-    // b. landing page disappears - can hide/show using CSS?
-    // c. first question appears - make question ID state change from hide to show?
-    // d. answers appear as buttons 
+//! 1. Configure start button
+    //!queryselector the 'start quiz' button
+  //! when clicked:
+    //! a. timer starts (60seconds would be reasonable)
+    //! b. landing page disappears - can hide/show using CSS?
+    //! c. first question appears - make question ID state change from hide to show?
+    //! d. answers appear as buttons 
 
 // 2. target time:0 with a counter
   // if incorrect answer clicked, remove 10s

@@ -17,27 +17,23 @@ correctAnswer: `Kristen Schaal`,
 }
 const question2 = {
 question: `What kind of pie does Albi the racist dragon eat at the end of the episode?`,
-trueAnswer: `Bubblegum`,
-falseAnswer1: `apple`,
-falseAnswer2: `rainbow`
+answers: [`apple`, `rainbow`, `bubblegum`],
+correctAnswer: `Bubblegum`,
 }
 const question3 = {
 question: `What does Jemaine get upset about no-one mentioning at his dinner party?`,
-trueAnswer: `Casserole and Profiteroles`,
-falseAnswer1: `Quiche and Salad`,
-falseAnswer2: `Lasagne and Meringue, yeah`
+answers: [ `Casserole and Profiteroles`,`Quiche and Salad`,`Lasagne and Meringue, yeah`],
+correctAnswer: `Casserole and Profiteroles`,
 }
 const question4 = {
 question: `What does Dave like to use for self defence?`,
-trueAnswer: `A watering can tied to a hose`,
-falseAnswer1: `A kettle attached to a rope`,
-falseAnswer2: `A mop taped to a bucket`
+answers: [`A kettle attached to a rope`,`A watering can tied to a hose`,`A mop taped to a bucket`],
+correctAnswer: `A watering can tied to a hose`,
 }
 const question5 = {
 question: `What distant year do the robots exist in?`,
-trueAnswer: `2000`,
-falseAnswer1: `3000`,
-falseAnswer2: `1000`
+answers: [`1000`, `2000`, `3000`],
+correctAnswer: `2000`,
 }
 
 // 1. Configure start button

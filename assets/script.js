@@ -9,6 +9,7 @@ const questionTitle = document.getElementById('question-title');
 const questionChoices = document.getElementById('choices');
 
 
+
 // Quiz question objects: (at least 5)
 const question1 = {
 question: `Who plays Mel?`,
@@ -36,21 +37,22 @@ answers: [`1000`, `2000`, `3000`],
 correctAnswer: `2000`,
 }
 
+
+
 // 1. Configure start button
   // when clicked:
 startButton.addEventListener(`click`, function(event) {
   event.preventDefault();
-  console.log(`timer started`);
   countdown();
     // a. timer starts (60seconds would be reasonable)
-  function countdown() {
     let timeLeft = 60;
+  function countdown() {
     const timeInterval = setInterval(function () {
       if (timeLeft > 0) {
         time.textContent = timeLeft + 's';
         timeLeft--;
       } else {
-        time.textContent = '';
+        time.textContent = '0';
         clearInterval(timeInterval); // to stop the timer
       }
     }, 1000);
@@ -69,16 +71,37 @@ renderAnswers()
   
     for (let i = 0; i < question1.answers.length; i++) {
       answer = question1.answers[i];
-      var button = document.createElement("button");
-      button.textContent = answer;
-      ul.appendChild(button);
+      var answerButton = document.createElement(`button`);
+      answerButton.textContent = answer;
+      ul.appendChild(answerButton);
+      console.log(answerButton);
+   
   }
 
 
+  // when an answer is clicked:
+  const message = document.createElement(`message`)
+  ul.appendChild(message);
+
+  ul.addEventListener(`click`, function(event) {
+    event.preventDefault();
+      if (event.target.textContent === question1.correctAnswer){
+        // tell them if they are correct or incorrect
+        message.textContent = `Correct!`;
+      } else {
+        message.textContent = `Incorrect! The correct answer was ${question1.correctAnswer}`;
+        timeLeft = timeLeft -10;        
+      }
     }
+  )
+
+
+  }
 }); // <-- end of start button when clicked event
 
- 
+
+
+
   
 
 
@@ -92,16 +115,18 @@ renderAnswers()
     //! c. first question appears - make question ID state change from hide to show?
     //! d. answers appear as buttons 
 
-// 2. target time:0 with a counter
-  // if incorrect answer clicked, remove 10s
+//! 2. target timer
+  //! if incorrect answer clicked, remove 10s
   // The quiz should end when all questions are answered or the timer reaches 0.
     //if else
 
 
-// 3. When any answer is clicked (click event)
+//! 3. When any answer is clicked (click event)
     // a. (optionally) show button colour green for correct
-    // b. if answered correctly, tell them + optionally use sound effects
-    // c. If answered incorrectly, tell them + optionally use sound effects
+    //! b. if answered correctly, tell them + 
+    //! c. If answered incorrectly, tell them
+      //optionally use sound effects
+      //!fix bug so that message can only come up once
     // d. the next question appears (only after a delay)
 
 

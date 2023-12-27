@@ -11,41 +11,44 @@ const questionChoices = document.getElementById('choices');
 
 
 // Quiz question objects: (at least 5)
-const question1 = {
-question: `Who plays Mel?`,
-answers: [`Kristen Schaal`,`Kristen Stewart`,`Kristen Wiig`],
-correctAnswer: `Kristen Schaal`,
-}
-const question2 = {
-question: `What kind of pie does Albi the racist dragon eat at the end of the episode?`,
-answers: [`apple`, `rainbow`, `bubblegum`],
-correctAnswer: `Bubblegum`,
-}
-const question3 = {
-question: `What does Jemaine get upset about no-one mentioning at his dinner party?`,
-answers: [ `Casserole and Profiteroles`,`Quiche and Salad`,`Lasagne and Meringue, yeah`],
-correctAnswer: `Casserole and Profiteroles`,
-}
-const question4 = {
+
+let questions = [
+  {
+    question: `Who plays Mel?`,
+    answers: [`Kristen Schaal`,`Kristen Stewart`,`Kristen Wiig`],
+    correctAnswer: `Kristen Schaal`,
+  },
+  {
+    question: `What kind of pie does Albi the racist dragon eat at the end of the episode?`,
+    answers: [`apple`, `rainbow`, `bubblegum`],
+    correctAnswer: `bubblegum`,
+  },
+  {
+    question: `What does Jemaine get upset about no-one mentioning at his dinner party?`,
+    answers: [ `Casserole and Profiteroles`,`Quiche and Salad`,`Lasagne and Meringue, yeah`],
+    correctAnswer: `Casserole and Profiteroles`,
+  },
+  {
 question: `What does Dave like to use for self defence?`,
 answers: [`A kettle attached to a rope`,`A watering can tied to a hose`,`A mop taped to a bucket`],
 correctAnswer: `A watering can tied to a hose`,
+},
+{
+  question: `What distant year do the robots exist in?`,
+  answers: [`1000`, `2000`, `3000`],
+  correctAnswer: `2000`,
 }
-const question5 = {
-question: `What distant year do the robots exist in?`,
-answers: [`1000`, `2000`, `3000`],
-correctAnswer: `2000`,
-}
+]
 
 
 
 // 1. Configure start button
-  // when clicked:
+// when clicked:
 startButton.addEventListener(`click`, function(event) {
   event.preventDefault();
   countdown();
-    // a. timer starts (60seconds would be reasonable)
-    let timeLeft = 60;
+  // a. timer starts (60seconds would be reasonable)
+  let timeLeft = 60;
   function countdown() {
     const timeInterval = setInterval(function () {
       if (timeLeft > 0) {
@@ -57,27 +60,31 @@ startButton.addEventListener(`click`, function(event) {
       }
     }, 1000);
   }
-    // b. landing page disappears - can hide/show using CSS?
+  // b. landing page disappears - can hide/show using CSS?
   startScreen.classList.add(`hide`);
-    // c. first question appears - change/remove `hide` question ID state
-  questionScreen.classList.remove('hide');
-  questionTitle.textContent = question1.question;
+  // c. first question appears - change/remove `hide` question ID state
 
+  let n = 0;
+  
+  questionsAndAnswers();
+  function questionsAndAnswers() {
+  const currentQuestion = questions[n];
+  questionScreen.classList.remove('hide');
+  questionTitle.textContent = currentQuestion.question;
+  
   // d. answers appear as buttons 
-renderAnswers()
+  renderAnswers()
   function renderAnswers() {
   const ul = document.createElement(`ul`)
   questionChoices.appendChild(ul);
   
-    for (let i = 0; i < question1.answers.length; i++) {
-      answer = question1.answers[i];
+    for (let i = 0; i < currentQuestion.answers.length; i++) {
+      answer = currentQuestion.answers[i];
       var answerButton = document.createElement(`button`);
       answerButton.textContent = answer;
       ul.appendChild(answerButton);
-      console.log(answerButton);
    
   }
-
 
   // when an answer is clicked:
   const message = document.createElement(`message`)
@@ -85,18 +92,29 @@ renderAnswers()
 
   ul.addEventListener(`click`, function(event) {
     event.preventDefault();
-      if (event.target.textContent === question1.correctAnswer){
+      if (event.target.textContent === currentQuestion.correctAnswer){
         // tell them if they are correct or incorrect
         message.textContent = `Correct!`;
       } else {
-        message.textContent = `Incorrect! The correct answer was ${question1.correctAnswer}`;
+        message.textContent = `Incorrect! The correct answer was ${currentQuestion.correctAnswer}`;
         timeLeft = timeLeft -10;        
+        
       }
-    }
+      setTimeout(() => { 
+        if (n < questions.length-1) {
+          n = n + 1;
+          questionChoices.textContent = ``;
+          questionsAndAnswers();     
+        }
+        else {
+          console.log(`game over`);
+        }
+      }, 2000);
+      }
   )
 
 
-  }
+  } }
 }); // <-- end of start button when clicked event
 
 
@@ -127,7 +145,7 @@ renderAnswers()
     //! c. If answered incorrectly, tell them
       //optionally use sound effects
       //!fix bug so that message can only come up once
-    // d. the next question appears (only after a delay)
+    //! d. the next question appears (only after a delay)
 
 
 // 5. When the game ends:

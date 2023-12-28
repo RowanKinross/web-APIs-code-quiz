@@ -50,7 +50,7 @@ startButton.addEventListener(`click`, function(event) {
   event.preventDefault();
   countdown();
   // a. timer starts (60seconds would be reasonable)
-  let timeLeft = 60;
+  let timeLeft = 20;
   function countdown() {
     const timeInterval = setInterval(function () {
       if (timeLeft > 0) {
@@ -59,6 +59,17 @@ startButton.addEventListener(`click`, function(event) {
       } else {
         time.textContent = '0';
         clearInterval(timeInterval); // to stop the timer
+        function outOfTime() {
+          if (timeLeft > 0) {
+            score = timeLeft;
+            } else {
+              score = 0;
+            }
+          finalScore.textContent = `${score}s`;
+          questionScreen.classList.add(`hide`);
+          endScreen.classList.remove(`hide`);
+        }
+        outOfTime();
       }
     }, 1000);
   }
@@ -85,7 +96,6 @@ startButton.addEventListener(`click`, function(event) {
       var answerButton = document.createElement(`button`);
       answerButton.textContent = answer;
       ul.appendChild(answerButton);
-   
   }
 
   // when an answer is clicked:
@@ -103,20 +113,23 @@ startButton.addEventListener(`click`, function(event) {
         
       }
       setTimeout(() => { 
-        if (n < questions.length-1) {
+        if (timeLeft > 0 && n < questions.length-1) {
           n = n + 1;
           questionChoices.textContent = ``;
           questionsAndAnswers();     
         }
-        else {
-          score = timeLeft
-          finalScore.textContent = `${score}s`;
-          questionScreen.classList.add('hide');
-          endScreen.classList.remove(`hide`);
+        else 
+        {
+        countdown();
+          
+          // endScreen.addEventListener(`submit`, function(event){
+          //   event.preventDefault();
+          // })
         }
       }, 1000);
       }
   )
+
 
 
   } }
@@ -140,8 +153,7 @@ startButton.addEventListener(`click`, function(event) {
 
 //! 2. target timer
   //! if incorrect answer clicked, remove 10s
-  // The quiz should end when all questions are answered or the timer reaches 0.
-    //if else
+  //! The quiz should end when all questions are answered or the timer reaches 0.
 
 
 //! 3. When any answer is clicked (click event)
@@ -154,11 +166,11 @@ startButton.addEventListener(`click`, function(event) {
 
 
 // 5. When the game ends:
-  // if timer runs out or all questions are answered
-    // a. Timer stops
-    // b. Question disappears
-    // c. Form appears for user to 'submit' their initials 
-      // initials and sore stored in local storage
+  //! if timer runs out or all questions are answered
+    //! a. Timer stops
+    //! b. Question disappears
+    //! c. Form appears for user to 'submit' their initials 
+      // initials and score stored in local storage
     // d. Display their score with their initials and any other locally stored scores
       // on the high scores page
       // high scores are listed highest to lowest

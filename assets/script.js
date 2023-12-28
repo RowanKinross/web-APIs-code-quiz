@@ -7,6 +7,8 @@ const startScreen = document.getElementById(`start-screen`);
 const questionScreen = document.getElementById(`questions`);
 const questionTitle = document.getElementById('question-title');
 const questionChoices = document.getElementById('choices');
+const endScreen = document.getElementById('end-screen');
+const finalScore = document.getElementById(`final-score`);
 
 
 
@@ -107,9 +109,12 @@ startButton.addEventListener(`click`, function(event) {
           questionsAndAnswers();     
         }
         else {
-          console.log(`game over`);
+          score = timeLeft
+          finalScore.textContent = `${score}s`;
+          questionScreen.classList.add('hide');
+          endScreen.classList.remove(`hide`);
         }
-      }, 2000);
+      }, 1000);
       }
   )
 

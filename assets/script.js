@@ -9,28 +9,30 @@ const questionTitle = document.getElementById('question-title');
 const questionChoices = document.getElementById('choices');
 const endScreen = document.getElementById('end-screen');
 const finalScore = document.getElementById(`final-score`);
+const enterInitials = document.getElementById(`initials`);
+const form = document.getElementsByTagName('form');
 
 
 
 // Quiz question objects: (at least 5)
 
 let questions = [
-  {
-    question: `Who plays Mel?`,
-    answers: [`Kristen Schaal`,`Kristen Stewart`,`Kristen Wiig`],
-    correctAnswer: `Kristen Schaal`,
-  },
-  {
-    question: `What kind of pie does Albi the racist dragon eat at the end of the episode?`,
-    answers: [`apple`, `rainbow`, `bubblegum`],
-    correctAnswer: `bubblegum`,
-  },
-  {
-    question: `What does Jemaine get upset about no-one mentioning at his dinner party?`,
-    answers: [ `Casserole and Profiteroles`,`Quiche and Salad`,`Lasagne and Meringue, yeah`],
-    correctAnswer: `Casserole and Profiteroles`,
-  },
-  {
+{
+  question: `Who plays Mel?`,
+  answers: [`Kristen Schaal`,`Kristen Stewart`,`Kristen Wiig`],
+  correctAnswer: `Kristen Schaal`,
+},
+{
+  question: `What kind of pie does Albi the racist dragon eat at the end of the episode?`,
+  answers: [`apple`, `rainbow`, `bubblegum`],
+  correctAnswer: `bubblegum`,
+},
+{
+  question: `What does Jemaine get upset about no-one mentioning at his dinner party?`,
+  answers: [ `Casserole and Profiteroles`,`Quiche and Salad`,`Lasagne and Meringue, yeah`],
+  correctAnswer: `Casserole and Profiteroles`,
+},
+{
 question: `What does Dave like to use for self defence?`,
 answers: [`A kettle attached to a rope`,`A watering can tied to a hose`,`A mop taped to a bucket`],
 correctAnswer: `A watering can tied to a hose`,
@@ -49,8 +51,8 @@ correctAnswer: `A watering can tied to a hose`,
 startButton.addEventListener(`click`, function(event) {
   event.preventDefault();
   countdown();
-  // a. timer starts (60seconds would be reasonable)
-  let timeLeft = 20;
+  // timer starts (60seconds would be reasonable)
+  let timeLeft = 30;
   function countdown() {
     const timeInterval = setInterval(function () {
       if (timeLeft > 0) {
@@ -59,81 +61,91 @@ startButton.addEventListener(`click`, function(event) {
       } else {
         time.textContent = '0';
         clearInterval(timeInterval); // to stop the timer
-        function outOfTime() {
-          if (timeLeft > 0) {
-            score = timeLeft;
-            } else {
-              score = 0;
-            }
-          finalScore.textContent = `${score}s`;
-          questionScreen.classList.add(`hide`);
-          endScreen.classList.remove(`hide`);
-        }
         outOfTime();
       }
     }, 1000);
   }
-  // b. landing page disappears - can hide/show using CSS?
+  // landing page disappears
   startScreen.classList.add(`hide`);
-  // c. first question appears - change/remove `hide` question ID state
+  // first question appears
+
+  // function for switching from the questions screen to the end screen and storing scores:
+  function outOfTime() {
+    if (timeLeft > 0) {
+      score = timeLeft+1; //+1 to account for the 1 second delay
+      } else {
+        score = 0;
+      }
+    finalScore.textContent = `${score}s`;
+    questionScreen.classList.add(`hide`);
+    endScreen.classList.remove(`hide`);
+    // time.textContent = ` `;
+    // clearInterval(countdown.timeInterval); //to stop the timer
+    
+    document.getElementById("myForm").addEventListener(`submit`, function(event) {
+      event.preventDefault();
+      alert("The form was submitted");
+      const user = {
+        score: score,
+        initials: enterInitials.value
+      }
+      localStorage.setItem(`user`, JSON.stringify(user));
+      console.log(user);
+    })
+  }
+
 
   let n = 0;
   
   questionsAndAnswers();
   function questionsAndAnswers() {
-  const currentQuestion = questions[n];
-  questionScreen.classList.remove('hide');
-  questionTitle.textContent = currentQuestion.question;
-  
-  // d. answers appear as buttons 
-  renderAnswers()
-  function renderAnswers() {
+    const currentQuestion = questions[n];
+    questionScreen.classList.remove('hide');
+    questionTitle.textContent = currentQuestion.question;
+    
+    // answers appear as buttons 
+    renderAnswers()
+    function renderAnswers() {
   const ul = document.createElement(`ul`)
   questionChoices.appendChild(ul);
   
-    for (let i = 0; i < currentQuestion.answers.length; i++) {
+  for (let i = 0; i < currentQuestion.answers.length; i++) {
       answer = currentQuestion.answers[i];
       var answerButton = document.createElement(`button`);
       answerButton.textContent = answer;
       ul.appendChild(answerButton);
   }
-
+  
   // when an answer is clicked:
   const message = document.createElement(`message`)
   ul.appendChild(message);
-
+  
   ul.addEventListener(`click`, function(event) {
     event.preventDefault();
-      if (event.target.textContent === currentQuestion.correctAnswer){
-        // tell them if they are correct or incorrect
-        message.textContent = `Correct!`;
-      } else {
-        message.textContent = `Incorrect! The correct answer was ${currentQuestion.correctAnswer}`;
-        timeLeft = timeLeft -10;        
-        
+    if (event.target.textContent === currentQuestion.correctAnswer){
+      // tell them if they are correct or incorrect
+      message.textContent = `Correct!`;
+    } else {
+      message.textContent = `Incorrect! The correct answer was ${currentQuestion.correctAnswer}`;
+      timeLeft = timeLeft -10;        
+    }
+    // delay moving on to next question by 1 second (1000ms)
+    setTimeout(() => { 
+      if (timeLeft > 0 && n < questions.length-1) {
+        n = n + 1;
+        questionChoices.textContent = ``;
+        questionsAndAnswers();     
       }
-      setTimeout(() => { 
-        if (timeLeft > 0 && n < questions.length-1) {
-          n = n + 1;
-          questionChoices.textContent = ``;
-          questionsAndAnswers();     
-        }
-        else 
-        {
-        countdown();
-          
-          // endScreen.addEventListener(`submit`, function(event){
-          //   event.preventDefault();
-          // })
-        }
-      }, 1000);
+      else 
+      {
+        outOfTime();
       }
+    }, 1000);
+  }
   )
-
-
-
-  } }
+} }
 }); // <-- end of start button when clicked event
+
 
 
 

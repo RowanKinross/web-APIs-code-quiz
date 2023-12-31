@@ -95,12 +95,15 @@ startButton.addEventListener(`click`, function(event) {
       const sameUserScore = JSON.parse(localStorage.getItem(user.initials));
       console.log(sameUserScore + `user init`);
       if (sameUserScore != null) {
-        user.scoreList.push(sameUserScore);
+        sameUserScore.push(score);
+        //user.scoreList.push(sameUserScore);
+        localStorage.setItem(user.initials, JSON.stringify(sameUserScore))
+      } else {
+        localStorage.setItem(user.initials, JSON.stringify(user.scoreList));
       }
-      localStorage.setItem(user.initials, JSON.stringify(user.scoreList))
       setTimeout(() => { 
         window.location = "./highscores.html";
-      }, 3000);
+      }, 1000);
     })
   }
 

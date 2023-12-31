@@ -10,9 +10,15 @@ const questionChoices = document.getElementById('choices');
 const endScreen = document.getElementById('end-screen');
 const finalScore = document.getElementById(`final-score`);
 const enterInitials = document.getElementById(`initials`);
-const form = document.getElementsByTagName('form');
+const form = document.getElementById('myForm');
 
 
+let n = 0;
+let answeredQuestions = 0;
+var user = {
+  scoreList: [],
+  initials: ``
+}
 
 // Quiz question objects: (at least 5)
 
@@ -27,21 +33,21 @@ let questions = [
   answers: [`apple`, `rainbow`, `bubblegum`],
   correctAnswer: `bubblegum`,
 },
-{
-  question: `What does Jemaine get upset about no-one mentioning at his dinner party?`,
-  answers: [ `Casserole and Profiteroles`,`Quiche and Salad`,`Lasagne and Meringue, yeah`],
-  correctAnswer: `Casserole and Profiteroles`,
-},
-{
-question: `What does Dave like to use for self defence?`,
-answers: [`A kettle attached to a rope`,`A watering can tied to a hose`,`A mop taped to a bucket`],
-correctAnswer: `A watering can tied to a hose`,
-},
-{
-  question: `What distant year do the robots exist in?`,
-  answers: [`1000`, `2000`, `3000`],
-  correctAnswer: `2000`,
-}
+// {
+//   question: `What does Jemaine get upset about no-one mentioning at his dinner party?`,
+//   answers: [ `Casserole and Profiteroles`,`Quiche and Salad`,`Lasagne and Meringue, yeah`],
+//   correctAnswer: `Casserole and Profiteroles`,
+// },
+// {
+// question: `What does Dave like to use for self defence?`,
+// answers: [`A kettle attached to a rope`,`A watering can tied to a hose`,`A mop taped to a bucket`],
+// correctAnswer: `A watering can tied to a hose`,
+// },
+// {
+//   question: `What distant year do the robots exist in?`,
+//   answers: [`1000`, `2000`, `3000`],
+//   correctAnswer: `2000`,
+// }
 ]
 
 
@@ -51,11 +57,11 @@ correctAnswer: `A watering can tied to a hose`,
 startButton.addEventListener(`click`, function(event) {
   event.preventDefault();
   countdown();
-  // timer starts (60seconds would be reasonable)
+  // timer starts (30seconds would be reasonable)
   let timeLeft = 30;
   function countdown() {
     const timeInterval = setInterval(function () {
-      if (timeLeft > 0) {
+      if (timeLeft > 0 && answeredQuestions < questions.length) {
         time.textContent = timeLeft + 's';
         timeLeft--;
       } else {
@@ -81,21 +87,24 @@ startButton.addEventListener(`click`, function(event) {
     endScreen.classList.remove(`hide`);
     // time.textContent = ` `;
     // clearInterval(countdown.timeInterval); //to stop the timer
-    
-    document.getElementById("myForm").addEventListener(`submit`, function(event) {
+      form.addEventListener(`submit`, function(event) {
       event.preventDefault();
       alert("The form was submitted");
-      const user = {
-        score: score,
-        initials: enterInitials.value
+      user.scoreList.push(score);
+      user.initials = enterInitials.value;
+      const sameUserScore = JSON.parse(localStorage.getItem(user.initials));
+      console.log(sameUserScore + `user init`);
+      if (sameUserScore != null) {
+        user.scoreList.push(sameUserScore);
       }
-      localStorage.setItem(`user`, JSON.stringify(user));
-      console.log(user);
+      localStorage.setItem(user.initials, JSON.stringify(user.scoreList))
+      setTimeout(() => { 
+        window.location = "./highscores.html";
+      }, 3000);
     })
   }
 
 
-  let n = 0;
   
   questionsAndAnswers();
   function questionsAndAnswers() {
@@ -122,12 +131,13 @@ startButton.addEventListener(`click`, function(event) {
   
   ul.addEventListener(`click`, function(event) {
     event.preventDefault();
+    answeredQuestions += 1;
     if (event.target.textContent === currentQuestion.correctAnswer){
       // tell them if they are correct or incorrect
       message.textContent = `Correct!`;
     } else {
       message.textContent = `Incorrect! The correct answer was ${currentQuestion.correctAnswer}`;
-      timeLeft = timeLeft -10;        
+      timeLeft = timeLeft -10;       
     }
     // delay moving on to next question by 1 second (1000ms)
     setTimeout(() => { 
@@ -135,10 +145,6 @@ startButton.addEventListener(`click`, function(event) {
         n = n + 1;
         questionChoices.textContent = ``;
         questionsAndAnswers();     
-      }
-      else 
-      {
-        outOfTime();
       }
     }, 1000);
   }

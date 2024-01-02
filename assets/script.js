@@ -89,8 +89,9 @@ startButton.addEventListener(`click`, function(event) {
     // clearInterval(countdown.timeInterval); //to stop the timer
       form.addEventListener(`submit`, function(event) {
       event.preventDefault();
+      if (enterInitials.value.trim().length<4) {
       user.scoreList.push(score);
-      user.initials = enterInitials.value;
+      user.initials = enterInitials.value.trim().toUpperCase();
       const sameUserScore = JSON.parse(localStorage.getItem(user.initials));
       if (sameUserScore != null) {
         sameUserScore.push(score);
@@ -102,6 +103,11 @@ startButton.addEventListener(`click`, function(event) {
       setTimeout(() => { 
         window.location = "./highscores.html";
       }, 1000);
+    } else {
+      alert(`please limit initials to 3 characters`)
+
+    }
+      
     })
   }
 

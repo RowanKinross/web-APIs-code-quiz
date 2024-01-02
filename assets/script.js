@@ -33,21 +33,21 @@ let questions = [
   answers: [`apple`, `rainbow`, `bubblegum`],
   correctAnswer: `bubblegum`,
 },
-// {
-//   question: `What does Jemaine get upset about no-one mentioning at his dinner party?`,
-//   answers: [ `Casserole and Profiteroles`,`Quiche and Salad`,`Lasagne and Meringue, yeah`],
-//   correctAnswer: `Casserole and Profiteroles`,
-// },
-// {
-// question: `What does Dave like to use for self defence?`,
-// answers: [`A kettle attached to a rope`,`A watering can tied to a hose`,`A mop taped to a bucket`],
-// correctAnswer: `A watering can tied to a hose`,
-// },
-// {
-//   question: `What distant year do the robots exist in?`,
-//   answers: [`1000`, `2000`, `3000`],
-//   correctAnswer: `2000`,
-// }
+{
+  question: `What does Jemaine get upset about no-one mentioning at his dinner party?`,
+  answers: [ `Casserole and Profiteroles`,`Quiche and Salad`,`Lasagne and Meringue, yeah`],
+  correctAnswer: `Casserole and Profiteroles`,
+},
+{
+question: `What does Dave like to use for self defence?`,
+answers: [`A kettle attached to a rope`,`A watering can tied to a hose`,`A mop taped to a bucket`],
+correctAnswer: `A watering can tied to a hose`,
+},
+{
+  question: `What distant year do the robots exist in?`,
+  answers: [`1000`, `2000`, `3000`],
+  correctAnswer: `2000`,
+}
 ]
 
 
@@ -57,8 +57,8 @@ let questions = [
 startButton.addEventListener(`click`, function(event) {
   event.preventDefault();
   countdown();
-  // timer starts (30seconds would be reasonable)
-  let timeLeft = 30;
+  // timer starts (60seconds would be reasonable)
+  let timeLeft = 60;
   function countdown() {
     const timeInterval = setInterval(function () {
       if (timeLeft > 0 && answeredQuestions < questions.length) {

@@ -1,6 +1,6 @@
-//Make a timed quiz on JavaScript fundamentals that stores high scores
+//Make a timed quiz that stores high scores
 
-// declare consts and variables:
+// declare elements found on the html
 const startButton = document.getElementById(`start`); //Selects the existing 'start quiz' button
 const time = document.getElementById(`time`); //Selects the existing timer
 const startScreen = document.getElementById(`start-screen`);
@@ -12,16 +12,17 @@ const finalScore = document.getElementById(`final-score`);
 const enterInitials = document.getElementById(`initials`);
 const form = document.getElementById('myForm');
 
-
-let n = 0;
-let answeredQuestions = 0;
-var user = {
+// declare global variables
+let n = 0; // for use in question selection
+let answeredQuestions = 0; // for the answered questions counter
+var user = { // to format the scores with their user identity
   scoreList: [],
   initials: ``
 }
 
-// Quiz question objects: (at least 5)
 
+
+// Quiz question objects: (at least 5)
 let questions = [
 {
   question: `Who plays Mel?`,
@@ -52,95 +53,55 @@ correctAnswer: `A watering can tied to a hose`,
 
 
 
-// 1. Configure start button
-// when clicked:
+//1. Configure start button
+  // when clicked:
 startButton.addEventListener(`click`, function(event) {
   event.preventDefault();
+  // timer starts
   countdown();
-  // timer starts (60seconds would be reasonable)
-  let timeLeft = 60;
+  let timeLeft = 60; //60 seconds
   function countdown() {
     const timeInterval = setInterval(function () {
       if (timeLeft > 0 && answeredQuestions < questions.length) {
-        time.textContent = timeLeft + 's';
-        timeLeft--;
+        time.textContent = timeLeft + 's'; //time is the document element ID
+        timeLeft--; // timer goes down and text content is equal to the interval
       } else {
         time.textContent = '0';
         clearInterval(timeInterval); // to stop the timer
         outOfTime();
       }
-    }, 1000);
+    }, 1000); //1000ms interval
   }
   // landing page disappears
   startScreen.classList.add(`hide`);
-  // first question appears
-
-  // function for switching from the questions screen to the end screen and storing scores:
-  function outOfTime() {
-    if (timeLeft > 0) {
-      score = timeLeft+1; //+1 to account for the 1 second delay
-      } else {
-        score = 0;
-      }
-    finalScore.textContent = `${score}s`;
-    questionScreen.classList.add(`hide`);
-    endScreen.classList.remove(`hide`);
-    // time.textContent = ` `;
-    // clearInterval(countdown.timeInterval); //to stop the timer
-      form.addEventListener(`submit`, function(event) {
-      event.preventDefault();
-      if (enterInitials.value.trim().length<4) {
-      user.scoreList.push(score);
-      user.initials = enterInitials.value.trim().toUpperCase();
-      const sameUserScore = JSON.parse(localStorage.getItem(user.initials));
-      if (sameUserScore != null) {
-        sameUserScore.push(score);
-        //user.scoreList.push(sameUserScore);
-        localStorage.setItem(user.initials, JSON.stringify(sameUserScore))
-      } else {
-        localStorage.setItem(user.initials, JSON.stringify(user.scoreList));
-      }
-      setTimeout(() => { 
-        window.location = "./highscores.html";
-      }, 1000);
-    } else {
-      alert(`please limit initials to 3 characters`)
-
-    }
-      
-    })
-  }
-
 
   
-  questionsAndAnswers();
-  function questionsAndAnswers() {
-    const currentQuestion = questions[n];
-    questionScreen.classList.remove('hide');
-    questionTitle.textContent = currentQuestion.question;
-    
-    // answers appear as buttons 
-    renderAnswers()
-    function renderAnswers() {
+  
+//2. Questions and answers function
+questionsAndAnswers();
+function questionsAndAnswers() {
+  const currentQuestion = questions[n]; // select the current question
+  questionScreen.classList.remove('hide'); //view questions
+  questionTitle.textContent = currentQuestion.question; // display the current question 
+  // answers appear as buttons 
+  renderAnswers()
+  function renderAnswers() {
   const ul = document.createElement(`ul`)
-  questionChoices.appendChild(ul);
-  
+  questionChoices.appendChild(ul); // append a list to the html
   for (let i = 0; i < currentQuestion.answers.length; i++) {
       answer = currentQuestion.answers[i];
       var answerButton = document.createElement(`button`);
       answerButton.textContent = answer;
-      ul.appendChild(answerButton);
-  }
-  
+      ul.appendChild(answerButton); // append the specific answer buttons to the unordered list
+  }  
   // when an answer is clicked:
   const message = document.createElement(`message`)
   ul.appendChild(message);
-  
   ul.addEventListener(`click`, function(event) {
     event.preventDefault();
-    answeredQuestions += 1;
+    answeredQuestions += 1; //add one to the questions counter
+    // tell them if they are correct or incorrect
     if (event.target.textContent === currentQuestion.correctAnswer){
-      // tell them if they are correct or incorrect
       message.textContent = `Correct!`;
     } else {
       message.textContent = `Incorrect! The correct answer was ${currentQuestion.correctAnswer}`;
@@ -154,50 +115,47 @@ startButton.addEventListener(`click`, function(event) {
         questionsAndAnswers();     
       }
     }, 1000);
-  }
-  )
-} }
-}); // <-- end of start button when clicked event
+  })//<-- end of answer button event listener
+  } //<-- end of render answers function
+} //<-- end of questions and answers function
 
 
 
 
-
-  
-
-
+//3.  Function for switching from the questions screen to the end screen and storing scores:
+function outOfTime() {
+  if (timeLeft > 0) {
+    score = timeLeft+1; //+1 to account for the 1 second delay
+  } else {
+    score = 0;
+    }
+  questionScreen.classList.add(`hide`); //hide the questions screen
+  endScreen.classList.remove(`hide`); //view the end screen
+  finalScore.textContent = `${score}s`; //display the score
+  //event listener for the submit button
+  form.addEventListener(`submit`, function(event) {
+  event.preventDefault();
+  if (enterInitials.value.trim().length<4 && enterInitials.value.trim().length != 0) { //check input for intials is between 1 & 3 characters
+    user.scoreList.push(score); //input score to the user object
+    user.initials = enterInitials.value.trim().toUpperCase();//input initials to the user object
+    //check if user exists and add their score to their local stored scores array if so:
+    const sameUserScore = JSON.parse(localStorage.getItem(user.initials)); 
+    if (sameUserScore != null) {
+      sameUserScore.push(score);
+      localStorage.setItem(user.initials, JSON.stringify(sameUserScore))
+    } else { // else create a user with their score
+      localStorage.setItem(user.initials, JSON.stringify(user.scoreList));
+    }
+    setTimeout(() => { // move to highscores page after a delay
+      window.location = "./highscores.html";
+    }, 1000); //1 second
+  } else { //if initials don't comply, alert user to try again
+    alert(`please input your initials (up to 3 characters)`)
+  } //<-- end of initials & score input if statement
     
-
-//! 1. Configure start button
-    //!queryselector the 'start quiz' button
-  //! when clicked:
-    //! a. timer starts (60seconds would be reasonable)
-    //! b. landing page disappears - can hide/show using CSS?
-    //! c. first question appears - make question ID state change from hide to show?
-    //! d. answers appear as buttons 
-
-//! 2. target timer
-  //! if incorrect answer clicked, remove 10s
-  //! The quiz should end when all questions are answered or the timer reaches 0.
+  }) //<-- end of submit event listener
+}//<-- end of out of time function
 
 
-//! 3. When any answer is clicked (click event)
-    // a. (optionally) show button colour green for correct
-    //! b. if answered correctly, tell them + 
-    //! c. If answered incorrectly, tell them
-      //optionally use sound effects
-      //!fix bug so that message can only come up once
-    //! d. the next question appears (only after a delay)
-    // make sure only initials up to 3 characters are typed in, remove spacing and symbols and make uppercase
 
-
-// 5. When the game ends:
-  //! if timer runs out or all questions are answered
-    //! a. Timer stops
-    //! b. Question disappears
-    //! c. Form appears for user to 'submit' their initials 
-      //! initials and score stored in local storage
-    // d. Display their score with their initials and any other locally stored scores
-      // on the high scores page
-      // high scores are listed highest to lowest
-      // option to take quiz again (target button)
+});// <-- end of start button click event

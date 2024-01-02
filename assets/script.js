@@ -89,11 +89,9 @@ startButton.addEventListener(`click`, function(event) {
     // clearInterval(countdown.timeInterval); //to stop the timer
       form.addEventListener(`submit`, function(event) {
       event.preventDefault();
-      alert("The form was submitted");
       user.scoreList.push(score);
       user.initials = enterInitials.value;
       const sameUserScore = JSON.parse(localStorage.getItem(user.initials));
-      console.log(sameUserScore + `user init`);
       if (sameUserScore != null) {
         sameUserScore.push(score);
         //user.scoreList.push(sameUserScore);
@@ -191,7 +189,7 @@ startButton.addEventListener(`click`, function(event) {
     //! a. Timer stops
     //! b. Question disappears
     //! c. Form appears for user to 'submit' their initials 
-      // initials and score stored in local storage
+      //! initials and score stored in local storage
     // d. Display their score with their initials and any other locally stored scores
       // on the high scores page
       // high scores are listed highest to lowest

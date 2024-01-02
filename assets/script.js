@@ -182,6 +182,7 @@ startButton.addEventListener(`click`, function(event) {
       //optionally use sound effects
       //!fix bug so that message can only come up once
     //! d. the next question appears (only after a delay)
+    // make sure only initials up to 3 characters are typed in, remove spacing and symbols and make uppercase
 
 
 // 5. When the game ends:

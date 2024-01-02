@@ -1,5 +1,5 @@
 const highScore = document.getElementById(`highscores`);
-
+const clear = document.getElementById('clear');
 
 // get the entries
 const entries = Object.entries(localStorage)
@@ -25,7 +25,6 @@ function highest(users){
 }
 
   var highestUsers = highest(users);
-  console.log(highestUsers);
 
   for (let i=0; i<highestUsers.length && i<10; i++) {
     var eachUser = highestUsers[i];
@@ -36,6 +35,10 @@ function highest(users){
     highScore.append(userScoreButton);
   }
 
+clear.addEventListener('click', function(event){
+  localStorage.clear();
+  location.reload();
+})
 
   // display scores highest to lowest
   //! Each user initials is userArray[0] and each user's scores are userArray[1] (as a string)

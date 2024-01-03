@@ -86,7 +86,8 @@ function questionsAndAnswers() {
   // answers appear as buttons 
   renderAnswers()
   function renderAnswers() {
-  const ul = document.createElement(`ul`)
+  const ul = document.createElement(`ul`);
+  ul.classList.add('.choices');
   questionChoices.appendChild(ul); // append a list to the html
   for (let i = 0; i < currentQuestion.answers.length; i++) {
       answer = currentQuestion.answers[i];
